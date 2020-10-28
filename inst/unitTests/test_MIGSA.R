@@ -225,18 +225,20 @@ test_Genesets_asGenesets_wrong_noGenes <- function() {
 
 ###### Genesets-enrichrGeneSets tests
 
-test_Genesets_enrichrGeneSets_ok_wellListed <- function() {
-  # if we dont have internet then dont fail the test
-  library(Biobase)
-  if (!hasInternet || !https_enabled) {
-    return(checkTrue(TRUE))
+if (testAll) {
+  test_Genesets_enrichrGeneSets_ok_wellListed <- function() {
+    # if we dont have internet then dont fail the test
+    library(Biobase)
+    if (!hasInternet || !https_enabled) {
+      return(checkTrue(TRUE))
+    }
+
+    enrichrList <- enrichrGeneSets()
+
+    checkTrue(is(enrichrList, "data.frame"))
+    checkTrue(ncol(enrichrList) > 0)
+    checkTrue(nrow(enrichrList) > 0)
   }
-
-  enrichrList <- enrichrGeneSets()
-
-  checkTrue(is(enrichrList, "data.frame"))
-  checkTrue(ncol(enrichrList) > 0)
-  checkTrue(nrow(enrichrList) > 0)
 }
 
 ###### Genesets-downloadEnrichrGeneSets tests
@@ -264,22 +266,24 @@ if (testAll) {
   }
 }
 
-test_Genesets_downloadEnrichrGeneSets_ok_kegg <- function() {
-  # if we dont have internet then dont fail the test
-  library(Biobase)
-  if (!hasInternet || !https_enabled) {
-    return(checkTrue(TRUE))
+if (testAll) {
+  test_Genesets_downloadEnrichrGeneSets_ok_kegg <- function() {
+    # if we dont have internet then dont fail the test
+    library(Biobase)
+    if (!hasInternet || !https_enabled) {
+      return(checkTrue(TRUE))
+    }
+
+    bioCartaName <- "BioCarta_2015"
+    bioCarta <- downloadEnrichrGeneSets(bioCartaName)
+
+    checkEquals(length(bioCarta), 1)
+    checkEquals(names(bioCarta), bioCartaName)
+
+    bioCarta <- bioCarta[[1]]
+    #         checkTrue(!kegg@is_GO);
+    checkTrue(length(bioCarta) > 0)
   }
-
-  bioCartaName <- "BioCarta_2015"
-  bioCarta <- downloadEnrichrGeneSets(bioCartaName)
-
-  checkEquals(length(bioCarta), 1)
-  checkEquals(names(bioCarta), bioCartaName)
-
-  bioCarta <- bioCarta[[1]]
-  #         checkTrue(!kegg@is_GO);
-  checkTrue(length(bioCarta) > 0)
 }
 
 if (testAll) {
